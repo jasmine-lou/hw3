@@ -11,20 +11,53 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     @ratings_to_show = []
 
-    if params['ratings']
-      @ratings_to_show = params['ratings'].keys
+    if !params[:sort]
+      if params['ratings']
+        @ratings_to_show = params['ratings'].keys
+      else
+        @ratings_to_show = []
+      end
       @movies = Movie.with_ratings(@ratings_to_show)
+    else
+      if params[:ratings]
+        @ratings_to_show = params[:ratings].keys
+      else
+        @ratings_to_show = []
+      end
+      if params[:sort] == 'title'
+        @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+      elsif params[:sort] == 'date'
+        @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+      end
     end
 
-    if params[:sort] == 'title'
-        # @ratings_to_show = params[:ratings].keys
-        @movies = Movie.with_ratings(params[:ratings].keys).order(:title)
-    end
+    # if params[:ratings]
+    #   @ratings_to_show = params[:ratings].keys
+    # end
 
-    if params[:sort] == 'date'
-        # @ratings_to_show = params[:ratings].keys
-        @movies = Movie.with_ratings(params[:ratings].keys).order(:release_date)
-    end
+    # # if params['ratings']
+    # #   @ratings_to_show = params['ratings'].keys
+    # # end
+
+    # @movies = Movie.with_ratings(@ratings_to_show)
+
+    # if params[:sort] == 'title'
+    #   @movies = Movie.with_ratings(params[:ratings].keys).order(:title)
+    # end
+
+    # if params[:sort] == 'date'
+    #   @movies = Movie.with_ratings(params[:ratings].keys).order(:release_date)
+    # end
+
+    # if params[:sort] == 'title'
+    #     # @ratings_to_show = params[:ratings].keys
+    #     @movies = Movie.with_ratings(params[:ratings].keys).order(:title)
+    # end
+
+    # if params[:sort] == 'date'
+    #     # @ratings_to_show = params[:ratings].keys
+    #     @movies = Movie.with_ratings(params[:ratings].keys).order(:release_date)
+    # end
 
     # if params[:sort]
     #   if params[:ratings]
