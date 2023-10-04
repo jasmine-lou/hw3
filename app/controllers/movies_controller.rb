@@ -26,6 +26,34 @@ class MoviesController < ApplicationController
         @movies = Movie.with_ratings(params[:ratings].keys).order(:release_date)
     end
 
+    # if params[:sort]
+    #   if params[:ratings]
+    #     @ratings_to_show = params[:ratings].keys
+    #     @movies = Movie.with_ratings(@ratings_to_show)
+    #     if params[:sort] == 'title'
+    #       @movies = Movie.order(:title)
+    #     elsif params[:sort] == 'date'
+    #       @movies = Movie.order(:release_date)
+    #     end
+    #   else
+    #     @ratings_to_show = []
+    #     @movies = Movie.with_ratings(@ratings_to_show)
+    #     if params[:sort] == 'title'
+    #       @movies = Movie.order(:title)
+    #     elsif params[:sort] == 'date'
+    #       @movies = Movie.order(:release_date)
+    #     end
+    #   end
+    # else
+    #   if params['ratings']
+    #     @ratings_to_show = params['ratings'].keys
+    #     @movies = Movie.with_ratings(@ratings_to_show)
+    #   else
+    #     @ratings_to_show = []
+    #     @movies = Movie.with_ratings(@ratings_to_show)
+    #   end
+    # end
+
   end
 
   def new
