@@ -12,10 +12,19 @@ class MoviesController < ApplicationController
     @ratings_to_show = []
 
     if params['ratings']
-        @ratings_to_show = params['ratings'].keys
+      @ratings_to_show = params['ratings'].keys
+      @movies = Movie.with_ratings(@ratings_to_show)
     end
 
-    @movies = Movie.with_ratings(@ratings_to_show)
+    if params[:sort] == 'title'
+        # @ratings_to_show = params[:ratings].keys
+        @movies = Movie.with_ratings(params[:ratings].keys).order(:title)
+    end
+
+    if params[:sort] == 'date'
+        # @ratings_to_show = params[:ratings].keys
+        @movies = Movie.with_ratings(params[:ratings].keys).order(:release_date)
+    end
 
   end
 
