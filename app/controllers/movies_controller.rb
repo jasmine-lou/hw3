@@ -9,25 +9,55 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     @all_ratings = Movie.all_ratings
-    
-    if !params[:sort]
-      if params['ratings']
-        @ratings_to_show = params['ratings'].keys
-      else
-        @ratings_to_show = []
-      end
 
-      @movies = Movie.with_ratings(@ratings_to_show)
-    else
-      @ratings_to_show = params[:ratings].keys
-      if params[:sort] == 'title'
-          @movies = Movie.with_ratings(@ratings_to_show).order(:title)
-      end
-
-      if params[:sort] == 'date'
-          @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
-      end
+    if params[:sort]
+      session[:sort] = params[:sort]
+    elsif session[:sort]
+      params[:sort] = session[:sort]
     end
+
+    if params['ratings']
+      @ratings_to_show = params['ratings'].keys
+      session[:ratings] = @ratings_to_show
+    elsif params[:ratings]
+      @ratings_to_show = params[:ratings].keys
+      session[:ratings] = @ratings_to_show
+    elsif session[:ratings]
+      @ratings_to_show = session[:ratings]
+    else
+      @ratings_to_show = []
+    end
+
+    if params[:sort] == 'title'
+      @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+    elsif params[:sort] == 'date'
+      @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+    else
+      @movies = Movie.with_ratings(@ratings_to_show)
+    end
+
+    
+    # if !params[:sort]
+    #   if params['ratings']
+    #     @ratings_to_show = params['ratings'].keys
+    #     session[:ratings] = @ratings_to_show
+    #   elsif session[:ratings]
+    #     @ratings_to_show = session[:ratings]
+    #   else
+    #     @ratings_to_show = []
+    #   end
+    #   @movies = Movie.with_ratings(@ratings_to_show)
+    # else
+    #   @ratings_to_show = params[:ratings].keys
+    #   session[:ratings] = @ratings_to_show
+    #   if params[:sort] == 'title'
+    #       @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+    #   end
+
+    #   if params[:sort] == 'date'
+    #       @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+    #   end
+    # end
 
 
 
